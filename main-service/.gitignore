@@ -34,3 +34,4 @@ build/
 
 ### Environment Variables ###
 .env
+main-service/.env.local
