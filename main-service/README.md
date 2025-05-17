@@ -31,28 +31,71 @@ A robust Spring Boot service that handles currency conversions with PostgreSQL p
 - PostgreSQL 12+
 - Git
 
-## 🔧 Configuration
+## 🔧 Setup and Configuration
 
-### Database Setup
+### 1. Database Setup
 
-1. Create a PostgreSQL database:
-```sql
-CREATE DATABASE currency_conversion;
+1. Start PostgreSQL service (if not already running):
+```bash
+sudo service postgresql start
+# or
+sudo systemctl start postgresql
 ```
 
-2. Configure database connection in `application.properties`:
-```properties
-spring.datasource.url=jdbc:postgresql://localhost:5432/currency_conversion
-spring.datasource.username=your_username
-spring.datasource.password=your_password
-```
-
-### Schema
-
-The service uses the following table structure:
-
+2. Create the database and user:
 ```sql
+-- Connect to PostgreSQL as postgres user
+sudo -u postgres psql
+
+-- Create database
+CREATE DATABASE mydb;
+
+-- Create user (if not exists)
+CREATE USER myuser WITH PASSWORD 'mypassword';
+
+-- Grant privileges
+GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+
+-- Connect to the new database
+\c mydb
+
+-- Create conversions table
 CREATE TABLE conversions (
+    id SERIAL PRIMARY KEY,
+    from_currency VARCHAR(3) NOT NULL,
+    to_currency VARCHAR(3) NOT NULL,
+    amount DECIMAL(19,4) NOT NULL,
+    rate DECIMAL(19,6) NOT NULL,
+    result DECIMAL(19,4) NOT NULL,
+    timestamp TIMESTAMP NOT NULL
+);
+
+-- Grant table permissions
+GRANT ALL PRIVILEGES ON TABLE conversions TO myuser;
+GRANT USAGE, SELECT ON SEQUENCE conversions_id_seq TO myuser;
+```
+
+3. Configure database connection in `application.properties`:
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/mydb
+spring.datasource.username=myuser
+spring.datasource.password=mypassword
+```
+
+4. Verify database connection:
+```bash
+# Connect to the database
+psql -h localhost -U myuser -d mydb
+
+# List tables
+\dt
+
+# Describe conversions table
+\d conversions
+```
+
+
+### 2. Application Setup
     id SERIAL PRIMARY KEY,
     from_currency VARCHAR(3) NOT NULL,
     to_currency VARCHAR(3) NOT NULL,
@@ -61,13 +104,13 @@ CREATE TABLE conversions (
     rate DECIMAL(19,4) NOT NULL,
     timestamp TIMESTAMP NOT NULL
 );
-```
+
 
 ## 🚀 Running the Application
 
 1. Clone the repository:
 ```bash
-git clone <repository-url>
+git clone https://github.com/VictorPaulArony/Realtime-Exchange
 cd main-service
 ```
 

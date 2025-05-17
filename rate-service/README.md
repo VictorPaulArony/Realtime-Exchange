@@ -20,7 +20,7 @@ A Spring Boot service that provides currency exchange rates through a secure RES
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/rate-service.git
+git clone https://github.com/VictorPaulArony/Realtime-Exchange
 cd rate-service
 ```
 
