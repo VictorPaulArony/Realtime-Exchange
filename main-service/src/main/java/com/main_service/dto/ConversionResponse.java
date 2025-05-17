@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
-//conversionResponse class to hold conversion details from the main-service
 public class ConversionResponse {
     private String from;
     private String to;
@@ -18,12 +17,10 @@ public class ConversionResponse {
 
     public ConversionResponse() {}
 
-    //conversionResponse builder method
     public static ConversionResponse.Builder builder() {
         return new ConversionResponse.Builder();
     }
 
-    //conversionResponse builder class
     public static class Builder {
         private final ConversionResponse response;
 
@@ -61,7 +58,6 @@ public class ConversionResponse {
         }
     }
 
-    // getters and setters for the fields
     public String getFrom() {
         return from;
     }

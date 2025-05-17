@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
 
-// ConversionRequest class for conversion requests from the client
 public class ConversionRequest {
     @NotBlank(message = "From currency is required")
     private String from;
@@ -19,15 +18,12 @@ public class ConversionRequest {
 
     public ConversionRequest() {}
 
-    // Constructor for ConversionRequest
     public ConversionRequest(String from, String to, BigDecimal amount) {
         this.from = from;
         this.to = to;
         this.amount = amount;
     }
 
-
-    // Getters and setters for the fields
     public String getFrom() {
         return from;
     }
