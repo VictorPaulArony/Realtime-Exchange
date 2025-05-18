@@ -1,137 +1,83 @@
 # Realtime-Exchange
-A simple Spring Boot application showcasing service-to-service communication and third-party API integration. The system consists of two microservices:
-- Currency Conversion Service: Converts currencies using real-time exchange rates from a free external API.
-- Logging Service: Records conversion history in a PostgreSQL database.
+
+A microservices-based currency conversion system consisting of:
+- **Rate Service**: Provides real-time exchange rates ([see rate-service/README.md](rate-service/README.md))
+- **Main Service**: Handles currency conversions and history ([see main-service/README.md](main-service/README.md))
 
 ## Prerequisites
-- Docker and Docker Compose installed on your system
-- Java 17 or higher (for local development)
+- Docker and Docker Compose
 
-## Running the Services
+## Quick Start with Docker
 
-### 1. Database Setup
-First, we'll start PostgreSQL and initialize the database:
+### Method A: Using Docker Compose Directly
 
+1. Start all services:
 ```bash
-# Start PostgreSQL container
-docker compose up postgres -d
-
-# Wait for PostgreSQL to be ready (about 10-15 seconds)
-docker compose logs -f postgres
+docker compose up -d
 ```
 
-The database will be automatically initialized with:
-- Database name: conversion_db
-- User: postgres
-- Password: postgres
-- Table: conversions (created automatically by the main service)
-
-### 2. Start Rate Service
-Once PostgreSQL is running, start the Rate Service:
-
-```bash
-docker compose up rate-service -d
-```
-
-Verify it's running:
-```bash
-docker compose logs -f rate-service
-```
-
-### 3. Start Main Service
-Finally, start the Main Service which will handle the currency conversions:
-
-```bash
-docker compose up main-service -d
-```
-
-Verify all services are running:
+2. Verify services are running:
 ```bash
 docker compose ps
 ```
 
-### View Service Logs
-To view logs from all services:
+3. View logs:
 ```bash
+# All services
 docker compose logs -f
-```
 
-To view logs from a specific service:
-```bash
+# Specific service
 docker compose logs -f [service-name]  # e.g., postgres, rate-service, or main-service
 ```
 
-### Stopping the Services
-To stop all services:
+4. Stop services:
 ```bash
+# Stop services
 docker compose down
-```
 
-To stop and remove all data (including database volume):
-```bash
+# Stop and remove data volumes
 docker compose down -v
 ```
 
-## Service URLs and Credentials
-1. PostgreSQL Database:
-   - Host: localhost:5432
-   - Database: conversion_db
-   - Username: postgres
-   - Password: postgres
+### Method B: Using the Helper Script
 
-2. Rate Service:
-   - Base URL: http://localhost:8081
-   - Endpoints:
-     - Get Exchange Rate: GET `/rate?from={FROM_CURRENCY}&to={TO_CURRENCY}`
-     - Check Status: GET `/status`
-   - Example:
-     ```bash
-     # Get exchange rate from USD to EUR
-     curl "http://localhost:8081/rate?from=USD&to=EUR"
-     ```
+A helper script `docker-run.sh` is provided for easier management of Docker services:
 
-3. Main Service:
-   - Base URL: http://localhost:8080
-   - Endpoints:
-     - Convert Currency: POST `/convert`
-     - Check Status: GET `/status`
-   - Example:
-     ```bash
-     # Convert 100 USD to EUR
-     curl -X POST http://localhost:8080/convert \
-       -H "Content-Type: application/json" \
-       -d '{
-         "fromCurrency": "USD",
-         "toCurrency": "EUR",
-         "amount": 100
-       }'
-     ```
+1. Make the script executable (first time only):
+```bash
+chmod +x docker-run.sh
+```
 
-## Testing the Services
+2. Available commands:
+```bash
+# Start all services
+./docker-run.sh start
 
-1. Check if services are running:
-   ```bash
-   # Check Rate Service status
-   curl http://localhost:8081/status
+# Check service status
+./docker-run.sh status
 
-   # Check Main Service status
-   curl http://localhost:8080/status
-   ```
+# View logs
+./docker-run.sh logs
 
-2. Get an exchange rate:
-   ```bash
-   curl "http://localhost:8081/rate?from=USD&to=EUR"
-   ```
+# Stop services
+./docker-run.sh stop
 
-3. Convert currency:
-   ```bash
-   curl -X POST http://localhost:8080/convert \
-     -H "Content-Type: application/json" \
-     -d '{
-       "fromCurrency": "USD",
-       "toCurrency": "EUR",
-       "amount": 100
-     }'
-   ```
+# Restart services
+./docker-run.sh restart
 
-Note: Currency codes should be in ISO 4217 format (e.g., USD, EUR, GBP, JPY).
+# Stop and remove volumes
+./docker-run.sh clean
+
+# Show help
+./docker-run.sh help
+```
+
+## Service Endpoints
+
+- Rate Service: http://localhost:8081
+- Main Service: http://localhost:8080
+- PostgreSQL: localhost:5432
+
+For detailed API documentation and local development setup, please refer to the individual service READMEs:
+- [Rate Service Documentation](rate-service/README.md)
+- [Main Service Documentation](main-service/README.md)
