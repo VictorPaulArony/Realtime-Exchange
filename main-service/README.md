@@ -114,21 +114,15 @@ psql -d mydb
 
 # List tables
 \dt
+```
 
 # Describe conversions table
+```sql
 \d conversions
 ```
 
 
 ### 2. Application Setup
-    id SERIAL PRIMARY KEY,
-    from_currency VARCHAR(3) NOT NULL,
-    to_currency VARCHAR(3) NOT NULL,
-    amount DECIMAL(19,4) NOT NULL,
-    converted_amount DECIMAL(19,4) NOT NULL,
-    rate DECIMAL(19,4) NOT NULL,
-    timestamp TIMESTAMP NOT NULL
-);
 
 
 ## 🚀 Running the Application
@@ -148,6 +142,18 @@ cd main-service
 ```bash
 ./mvnw spring-boot:run
 ```
+
+### Integration Tests
+Alternatively, you can run integration tests using the provided test script. First, make the script executable:
+```bash
+chmod +x test-api.sh
+```
+
+Then run the tests:
+```bash
+./test-api.sh
+```
+
 
 ## 🔒 Security
 
