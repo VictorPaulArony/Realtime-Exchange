@@ -35,7 +35,11 @@ A robust Spring Boot service that handles currency conversions with PostgreSQL p
 
 ### 1. Database Setup
 
-1. Start PostgreSQL service (if not already running):
+Choose one of the following methods to set up the database:
+
+#### Method A: Using System PostgreSQL (requires sudo)
+
+1. Start PostgreSQL service:
 ```bash
 sudo service postgresql start
 # or
@@ -46,17 +50,35 @@ sudo systemctl start postgresql
 ```sql
 -- Connect to PostgreSQL as postgres user
 sudo -u postgres psql
+```
 
--- Create database
-CREATE DATABASE mydb;
+#### Method B: Local PostgreSQL Instance (no sudo required)
 
--- Create user (if not exists)
-CREATE USER myuser WITH PASSWORD 'mypassword';
+1. Initialize a new database cluster:
+```bash
+# Create a directory for the database
+mkdir -p ~/pgdata
 
--- Grant privileges
-GRANT ALL PRIVILEGES ON DATABASE mydb TO myuser;
+# Initialize the database cluster
+initdb -D ~/pgdata
 
--- Connect to the new database
+# Start PostgreSQL server
+pg_ctl -D ~/pgdata -l ~/pgdata/pg_logfile start
+
+# Create the database
+creatdb mydb
+
+# Connect to the database
+psql -d mydb
+```
+
+3. Set up the database schema (run these commands in psql):
+```sql
+-- Create user if using Method A (skip for Method B)
+CREATE USER username WITH PASSWORD 'password';
+GRANT ALL PRIVILEGES ON DATABASE mydb TO username;
+
+-- Connect to the database (if not already connected)
 \c mydb
 
 -- Create conversions table
@@ -71,21 +93,24 @@ CREATE TABLE conversions (
 );
 
 -- Grant table permissions
-GRANT ALL PRIVILEGES ON TABLE conversions TO myuser;
-GRANT USAGE, SELECT ON SEQUENCE conversions_id_seq TO myuser;
+GRANT ALL PRIVILEGES ON TABLE conversions TO username;
+GRANT USAGE, SELECT ON SEQUENCE conversions_id_seq TO username;
 ```
 
-3. Configure database connection in `application.properties`:
+4. Configure database connection in `application.properties`:
 ```properties
 spring.datasource.url=jdbc:postgresql://localhost:5432/mydb
-spring.datasource.username=myuser
-spring.datasource.password=mypassword
+spring.datasource.username=username
+spring.datasource.password=password
 ```
 
-4. Verify database connection:
+5. Verify database connection:
 ```bash
-# Connect to the database
-psql -h localhost -U myuser -d mydb
+# For Method A
+psql -h localhost -U username -d mydb
+
+# For Method B
+psql -d mydb
 
 # List tables
 \dt
