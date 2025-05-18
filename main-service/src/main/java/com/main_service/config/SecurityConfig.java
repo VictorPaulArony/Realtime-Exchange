@@ -49,6 +49,7 @@ public class SecurityConfig {
         return new InMemoryUserDetailsManager(user);
     }
 
+    // Bean to configure the Spring Security
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
