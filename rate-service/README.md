@@ -34,7 +34,7 @@ mvn clean install
 mvn spring-boot:run
 ```
 
-The service will start on `http://localhost:8080`
+The service will start on `http://localhost:8081`
 
 ## API Documentation
 
@@ -60,7 +60,7 @@ Basic Authentication is required:
 #### Example Request
 
 ```bash
-curl -X GET 'http://localhost:8080/rate?from=USD&to=EUR' \
+curl -X GET 'http://localhost:8081/rate?from=USD&to=EUR' \
   -H 'Authorization: Basic YXBpdXNlcjpwYXNzd29yZA=='
 ```
 
@@ -111,10 +111,28 @@ The project includes comprehensive unit tests covering:
    - Successful rate retrieval
    - Invalid currency handling
 
-Run the tests using:
+### Unit Tests
+Run the unit tests using:
 ```bash
 mvn test
 ```
+
+### Integration Tests
+Alternatively, you can run integration tests using the provided test script. First, make the script executable:
+```bash
+chmod +x test-api.sh
+```
+
+Then run the tests:
+```bash
+./test-api.sh
+```
+
+This script performs end-to-end testing of the API endpoints including:
+- Service health check
+- Authentication validation
+- Currency conversion scenarios
+- Error handling cases
 
 ### Test Coverage
 

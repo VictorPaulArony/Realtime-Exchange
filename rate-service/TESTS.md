@@ -4,7 +4,7 @@
 
 1.1. Check service status (No authentication required):
 ```bash
-curl -X GET 'http://localhost:8081/status'
+curl -X GET 'http://localhost:8081/status' -u apiuser:password
 ```
 Expected Response:
 ```json
