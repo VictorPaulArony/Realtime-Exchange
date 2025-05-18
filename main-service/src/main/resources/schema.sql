@@ -10,5 +10,5 @@ CREATE TABLE conversions (
     timestamp TIMESTAMP NOT NULL
 );
 
-GRANT ALL PRIVILEGES ON TABLE conversions TO myuser;
-GRANT USAGE, SELECT ON SEQUENCE conversions_id_seq TO myuser;
+GRANT ALL PRIVILEGES ON TABLE conversions TO username;
+GRANT USAGE, SELECT ON SEQUENCE conversions_id_seq TO username;
