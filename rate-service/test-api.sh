@@ -17,7 +17,7 @@ AUTH_HEADER="Authorization: Basic $(echo -n ${USERNAME}:${PASSWORD} | base64)"
 # Function to check if service is running
 check_service() {
     echo -e "\n🔍 Checking Rate Service..."
-    response=$(curl -s -w "\n%{http_code}" "${BASE_URL}/status" || echo "000")
+    response=$(curl -s -w "\n%{http_code}" "${BASE_URL}/status" -u "${USERNAME}:${PASSWORD}" || echo "000")
     http_code=$(echo "$response" | tail -n1)
     
     if [[ $http_code == 2* ]]; then

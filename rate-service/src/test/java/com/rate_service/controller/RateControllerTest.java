@@ -20,7 +20,7 @@ class RateControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-//    @MockBean
+    @MockBean
     private ExchangeRateService exchangeRateService;
 
     @Test
